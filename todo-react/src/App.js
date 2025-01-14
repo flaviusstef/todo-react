@@ -16,6 +16,7 @@ function App() {
     const newTodo = {
       text: event.target.elements.todo.value,
       completed: false,
+      dueDate: event.target.elements.dueDate.value || null,
     };
     const updatedTodos = [...todos, newTodo];
     setTodos(updatedTodos);
@@ -34,25 +35,33 @@ function App() {
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
   };
 
+  const isPastDue = (dueDate) => {
+    if (!dueDate) return false;
+    const now = new Date();
+    const due = new Date(dueDate);
+    return due < now;
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1 className="App-logo">ToDoDoDo</h1>
         <form onSubmit={addTodo}>
           <input type="text" name="todo" placeholder="Add a new todo" required />
+          <input type="date" name="dueDate" placeholder="Due date (optional)" />
           <button type="submit">Add</button>
         </form>
         <section>
           <h2>Tasks to do</h2>
           <ul className="todo-list">
             {todos.filter(todo => !todo.completed).map((todo, index) => (
-              <li key={index}>
+              <li key={index} className={isPastDue(todo.dueDate) ? 'past-due' : ''}>
                 <input
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text}
+                {todo.text} {todo.dueDate && <span>due: {todo.dueDate}</span>}
               </li>
             ))}
           </ul>
@@ -61,13 +70,13 @@ function App() {
           <h2>Completed</h2>
           <ul className="todo-list">
             {todos.filter(todo => todo.completed).map((todo, index) => (
-              <li key={index} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+              <li key={index} className={isPastDue(todo.dueDate) ? 'past-due' : ''} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
                 <input
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text}
+                {todo.text} {todo.dueDate && <span>due: {todo.dueDate}</span>}
               </li>
             ))}
           </ul>
