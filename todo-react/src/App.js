@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -36,13 +37,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h1 className="App-logo">ToDoDoDo</h1>
         <form onSubmit={addTodo}>
           <input type="text" name="todo" placeholder="Add a new todo" required />
           <button type="submit">Add</button>
         </form>
         <section>
           <h2>Tasks to do</h2>
-          <ul>
+          <ul className="todo-list">
             {todos.filter(todo => !todo.completed).map((todo, index) => (
               <li key={index}>
                 <input
@@ -57,7 +59,7 @@ function App() {
         </section>
         <section>
           <h2>Completed</h2>
-          <ul>
+          <ul className="todo-list">
             {todos.filter(todo => todo.completed).map((todo, index) => (
               <li key={index} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
                 <input

@@ -1,0 +1,25 @@
+.App-logo {
+  font-size: 2.5rem;
+  color: #50a0e6;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.todo-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.todo-list li {
+  background-color: #e6f7ff;
+  border: 1px solid #50a0e6;
+  border-radius: 5px;
+  margin: 5px 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.todo-list li input[type="checkbox"] {
+  margin-right: 10px;
+}
