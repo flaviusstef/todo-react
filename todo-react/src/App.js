@@ -40,18 +40,36 @@ function App() {
           <input type="text" name="todo" placeholder="Add a new todo" required />
           <button type="submit">Add</button>
         </form>
-        <ul>
-          {todos.map((todo, index) => (
-            <li key={index}>
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => toggleTodo(index)}
-              />
-              {todo.text}
-            </li>
-          ))}
-        </ul>
+        <section>
+          <h2>Tasks to do</h2>
+          <ul>
+            {todos.filter(todo => !todo.completed).map((todo, index) => (
+              <li key={index}>
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={() => toggleTodo(index)}
+                />
+                {todo.text}
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section>
+          <h2>Completed</h2>
+          <ul>
+            {todos.filter(todo => todo.completed).map((todo, index) => (
+              <li key={index} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={() => toggleTodo(index)}
+                />
+                {todo.text}
+              </li>
+            ))}
+          </ul>
+        </section>
       </header>
     </div>
   );
