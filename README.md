@@ -19,3 +19,5 @@ To do app in React
    ```
 
 4. Open your browser and go to `http://localhost:3000` to see the running application.
+
+**Note:** Ensure you are using Node.js version 16.x or later.
