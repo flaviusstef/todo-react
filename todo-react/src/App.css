@@ -85,3 +85,22 @@ button.secondary {
   background-color: #e6e6e6;
   color: #333;
 }
+
+/* Styles for category management form */
+.category-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-form label {
+  margin-top: 10px;
+}
+
+.category-form input {
+  margin-bottom: 10px;
+}
+
+/* Styles for category dropdowns */
+.category-dropdown {
+  margin: 10px 0;
+}
