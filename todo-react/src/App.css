@@ -54,3 +54,34 @@ form label {
 form input {
   margin-bottom: 10px;
 }
+
+/* Modal dialog styles */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.ReactModal__Content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  outline: none;
+}
+
+/* Primary and secondary action buttons */
+button.primary {
+  background-color: #50a0e6;
+  color: white;
+}
+
+button.secondary {
+  background-color: #e6e6e6;
+  color: #333;
+}

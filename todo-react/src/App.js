@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 import './App.css';
 
 function App() {
@@ -48,17 +49,23 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1 className="App-logo">ToDoDoDo</h1>
-        {!showForm && <button onClick={() => setShowForm(true)}>Add task</button>}
-        {showForm && (
+        <button onClick={() => setShowForm(true)}>Add task</button>
+        <Modal
+          isOpen={showForm}
+          onRequestClose={() => setShowForm(false)}
+          contentLabel="Add Task"
+          className="ReactModal__Content"
+          overlayClassName="ReactModal__Overlay"
+        >
           <form onSubmit={addTodo}>
             <label htmlFor="todo">Task</label>
             <input type="text" name="todo" placeholder="Add a new todo" required />
             <label htmlFor="dueDate">Due Date</label>
             <input type="date" name="dueDate" placeholder="Due date (optional)" />
-            <button type="submit">Add</button>
-            <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
+            <button type="submit" className="primary">Add</button>
+            <button type="button" className="secondary" onClick={() => setShowForm(false)}>Cancel</button>
           </form>
-        )}
+        </Modal>
         <section>
           <h2>Tasks to do</h2>
           <ul className="todo-list">
