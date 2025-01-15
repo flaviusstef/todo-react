@@ -3,6 +3,7 @@ import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const storedTodos = JSON.parse(localStorage.getItem('todos'));
@@ -22,6 +23,7 @@ function App() {
     setTodos(updatedTodos);
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
     event.target.reset();
+    setShowForm(false);
   };
 
   const toggleTodo = (index) => {
@@ -46,11 +48,17 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1 className="App-logo">ToDoDoDo</h1>
-        <form onSubmit={addTodo}>
-          <input type="text" name="todo" placeholder="Add a new todo" required />
-          <input type="date" name="dueDate" placeholder="Due date (optional)" />
-          <button type="submit">Add</button>
-        </form>
+        {!showForm && <button onClick={() => setShowForm(true)}>Add task</button>}
+        {showForm && (
+          <form onSubmit={addTodo}>
+            <label htmlFor="todo">Task</label>
+            <input type="text" name="todo" placeholder="Add a new todo" required />
+            <label htmlFor="dueDate">Due Date</label>
+            <input type="date" name="dueDate" placeholder="Due date (optional)" />
+            <button type="submit">Add</button>
+            <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
+          </form>
+        )}
         <section>
           <h2>Tasks to do</h2>
           <ul className="todo-list">
