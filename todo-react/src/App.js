@@ -61,7 +61,7 @@ function App() {
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text} {todo.dueDate && <span>due: {todo.dueDate}</span>}
+                {todo.text} {todo.dueDate && <span> (due: {todo.dueDate})</span>}
               </li>
             ))}
           </ul>
@@ -76,7 +76,7 @@ function App() {
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text} {todo.dueDate && <span>due: {todo.dueDate}</span>}
+                {todo.text} {todo.dueDate && <span> (due: {todo.dueDate})</span>}
               </li>
             ))}
           </ul>
