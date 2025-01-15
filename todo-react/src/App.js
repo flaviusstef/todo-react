@@ -55,13 +55,13 @@ function App() {
           <h2>Tasks to do</h2>
           <ul className="todo-list">
             {todos.filter(todo => !todo.completed).map((todo, index) => (
-              <li key={index} className={isPastDue(todo.dueDate) ? 'past-due' : ''}>
+              <li key={index}>
                 <input
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text} {todo.dueDate && <span> (due: {todo.dueDate})</span>}
+                {todo.text} {todo.dueDate && <span className={isPastDue(todo.dueDate) ? 'due-date-past-due' : ''}> (due: {todo.dueDate})</span>}
               </li>
             ))}
           </ul>
@@ -70,13 +70,13 @@ function App() {
           <h2>Completed</h2>
           <ul className="todo-list">
             {todos.filter(todo => todo.completed).map((todo, index) => (
-              <li key={index} className={isPastDue(todo.dueDate) ? 'past-due' : ''} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+              <li key={index} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
                 <input
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text} {todo.dueDate && <span> (due: {todo.dueDate})</span>}
+                {todo.text} {todo.dueDate && <span className={isPastDue(todo.dueDate) ? 'due-date-past-due' : ''}> (due: {todo.dueDate})</span>}
               </li>
             ))}
           </ul>

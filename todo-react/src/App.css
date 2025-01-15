@@ -24,6 +24,6 @@
   margin-right: 10px;
 }
 
-.past-due {
-  background-color: #ffcc99 !important;
+.due-date-past-due {
+  color: #ffcc99;
 }
