@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Typography,
+  Modal,
+  Box,
+  ThemeProvider,
+  createTheme
+} from '@mui/material';
 import './App.css';
 
 function App() {
@@ -83,95 +101,110 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="App-logo">ToDoDoDo</h1>
-        <button onClick={() => setShowForm(true)}>Add task</button>
-        <button onClick={() => setShowCategoryForm(true)}>Manage categories</button>
+        <Typography variant="h1" className="App-logo">ToDoDoDo</Typography>
+        <Button variant="contained" color="primary" onClick={() => setShowForm(true)}>Add task</Button>
+        <Button variant="contained" color="secondary" onClick={() => setShowCategoryForm(true)}>Manage categories</Button>
         <Modal
-          isOpen={showForm}
-          onRequestClose={() => setShowForm(false)}
-          contentLabel="Add Task"
-          className="ReactModal__Content"
-          overlayClassName="ReactModal__Overlay"
+          open={showForm}
+          onClose={() => setShowForm(false)}
+          aria-labelledby="add-task-modal"
         >
-          <form onSubmit={addTodo}>
-            <label htmlFor="todo">Task</label>
-            <input type="text" name="todo" placeholder="Add a new todo" required />
-            <label htmlFor="dueDate">Due Date</label>
-            <input type="date" name="dueDate" placeholder="Due date (optional)" />
-            <label htmlFor="category">Category</label>
-            <select name="category">
-              <option value="">None</option>
+          <Box className="ReactModal__Content">
+            <form onSubmit={addTodo}>
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="todo">Task</InputLabel>
+                <TextField id="todo" name="todo" placeholder="Add a new todo" required />
+              </FormControl>
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="dueDate">Due Date</InputLabel>
+                <TextField id="dueDate" name="dueDate" type="date" placeholder="Due date (optional)" />
+              </FormControl>
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="category">Category</InputLabel>
+                <Select id="category" name="category">
+                  <MenuItem value="">None</MenuItem>
+                  {categories.map((category, index) => (
+                    <MenuItem key={index} value={category}>{category}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Button type="submit" variant="contained" color="primary">Add</Button>
+              <Button type="button" variant="contained" color="secondary" onClick={() => setShowForm(false)}>Cancel</Button>
+            </form>
+          </Box>
+        </Modal>
+        <Modal
+          open={showCategoryForm}
+          onClose={() => setShowCategoryForm(false)}
+          aria-labelledby="manage-categories-modal"
+        >
+          <Box className="ReactModal__Content">
+            <form onSubmit={addCategory}>
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="category">Category</InputLabel>
+                <TextField id="category" name="category" placeholder="Add a new category" required />
+              </FormControl>
+              <Button type="submit" variant="contained" color="primary">Add</Button>
+              <Button type="button" variant="contained" color="secondary" onClick={() => setShowCategoryForm(false)}>Cancel</Button>
+            </form>
+            <List>
               {categories.map((category, index) => (
-                <option key={index} value={category}>{category}</option>
+                <ListItem key={index}>
+                  <ListItemText primary={category} />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="edit" onClick={() => editCategory(index, prompt('Edit category', category))}>
+                      Edit
+                    </IconButton>
+                    <IconButton edge="end" aria-label="delete" onClick={() => deleteCategory(index)}>
+                      Delete
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
               ))}
-            </select>
-            <button type="submit" className="primary">Add</button>
-            <button type="button" className="secondary" onClick={() => setShowForm(false)}>Cancel</button>
-          </form>
-        </Modal>
-        <Modal
-          isOpen={showCategoryForm}
-          onRequestClose={() => setShowCategoryForm(false)}
-          contentLabel="Manage Categories"
-          className="ReactModal__Content"
-          overlayClassName="ReactModal__Overlay"
-        >
-          <form onSubmit={addCategory}>
-            <label htmlFor="category">Category</label>
-            <input type="text" name="category" placeholder="Add a new category" required />
-            <button type="submit" className="primary">Add</button>
-            <button type="button" className="secondary" onClick={() => setShowCategoryForm(false)}>Cancel</button>
-          </form>
-          <ul>
-            {categories.map((category, index) => (
-              <li key={index}>
-                {category}
-                <button onClick={() => editCategory(index, prompt('Edit category', category))}>Edit</button>
-                <button onClick={() => deleteCategory(index)}>Delete</button>
-              </li>
-            ))}
-          </ul>
+            </List>
+          </Box>
         </Modal>
         <section>
-          <h2>Filter by Category</h2>
-          <select onChange={(e) => setSelectedCategory(e.target.value)} value={selectedCategory}>
-            <option value="">All</option>
-            {categories.map((category, index) => (
-              <option key={index} value={category}>{category}</option>
-            ))}
-          </select>
+          <Typography variant="h2">Filter by Category</Typography>
+          <FormControl fullWidth margin="normal">
+            <InputLabel htmlFor="filter-category">Category</InputLabel>
+            <Select id="filter-category" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+              <MenuItem value="">All</MenuItem>
+              {categories.map((category, index) => (
+                <MenuItem key={index} value={category}>{category}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </section>
         <section>
-          <h2>Tasks to do</h2>
-          <ul className="todo-list">
+          <Typography variant="h2">Tasks to do</Typography>
+          <List className="todo-list">
             {todos.filter(todo => !todo.completed && (selectedCategory === '' || todo.category === selectedCategory)).map((todo, index) => (
-              <li key={index}>
-                <input
-                  type="checkbox"
+              <ListItem key={index}>
+                <Checkbox
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text} {todo.dueDate && <span className={isPastDue(todo.dueDate) ? 'due-date-past-due' : ''}> ( due: {todo.dueDate})</span>}
-                {todo.category && <span> [Category: {todo.category}]</span>}
-              </li>
+                <ListItemText primary={todo.text} secondary={todo.dueDate && <span className={isPastDue(todo.dueDate) ? 'due-date-past-due' : ''}> ( due: {todo.dueDate})</span>} />
+                {todo.category && <ListItemText secondary={`[Category: ${todo.category}]`} />}
+              </ListItem>
             ))}
-          </ul>
+          </List>
         </section>
         <section>
-          <h2>Completed</h2>
-          <ul className="todo-list">
+          <Typography variant="h2">Completed</Typography>
+          <List className="todo-list">
             {todos.filter(todo => todo.completed && (selectedCategory === '' || todo.category === selectedCategory)).map((todo, index) => (
-              <li key={index} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-                <input
-                  type="checkbox"
+              <ListItem key={index} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                <Checkbox
                   checked={todo.completed}
                   onChange={() => toggleTodo(index)}
                 />
-                {todo.text} {todo.dueDate && <span className={isPastDue(todo.dueDate) ? 'due-date-past-due' : ''}> ( due: {todo.dueDate})</span>}
-                {todo.category && <span> [Category: {todo.category}]</span>}
-              </li>
+                <ListItemText primary={todo.text} secondary={todo.dueDate && <span className={isPastDue(todo.dueDate) ? 'due-date-past-due' : ''}> ( due: {todo.dueDate})</span>} />
+                {todo.category && <ListItemText secondary={`[Category: ${todo.category}]`} />}
+              </ListItem>
             ))}
-          </ul>
+          </List>
         </section>
       </header>
     </div>
